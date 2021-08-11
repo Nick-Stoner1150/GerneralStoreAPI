@@ -1,5 +1,7 @@
-﻿using System.Security.Claims;
+﻿using System.Data.Entity;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using GerneralStoreAPI.Models.Models.POCOs;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -29,5 +31,7 @@ namespace GerneralStoreAPI.Models
         {
             return new ApplicationDbContext();
         }
+        
+        public DbSet<Customer> Customers { get; set; }
     }
 }
