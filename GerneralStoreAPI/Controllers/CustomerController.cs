@@ -64,7 +64,7 @@ namespace GerneralStoreAPI.Controllers
         [HttpPut]
         public async Task<IHttpActionResult> UpdateCustomer([FromUri] int id, [FromBody] Customer updatedCustomer)
         {
-            if(id != updatedCustomer.Id)
+            if(id != updatedCustomer?.Id)
             {
                 return BadRequest("Id's do not match.");
             }
@@ -84,6 +84,26 @@ namespace GerneralStoreAPI.Controllers
 
             return Ok("The customer was udapted");
 
+        }
+
+        // Delete
+        // api/Customer/{id}
+        [HttpDelete]
+        public async Task<IHttpActionResult> DeleteCustomer([FromUri] int id)
+        {
+            Customer customer = await _context.Customers.FindAsync(id);
+
+            if (customer is null)
+                return NotFound();
+
+            _context.Customers.Remove(customer);
+
+            if(await _context.SaveChangesAsync() == 1)
+            {
+                return Ok("The customer was deleted!");
+            }
+
+            return InternalServerError();
         }
 
     }

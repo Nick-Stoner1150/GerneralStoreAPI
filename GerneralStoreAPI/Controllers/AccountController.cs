@@ -16,6 +16,9 @@ using Microsoft.Owin.Security.OAuth;
 using GerneralStoreAPI.Models;
 using GerneralStoreAPI.Providers;
 using GerneralStoreAPI.Results;
+using Microsoft.AspNetCore.Authorization;
+using AuthorizeAttribute = Microsoft.AspNetCore.Authorization.AuthorizeAttribute;
+using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
 
 namespace GerneralStoreAPI.Controllers
 {
