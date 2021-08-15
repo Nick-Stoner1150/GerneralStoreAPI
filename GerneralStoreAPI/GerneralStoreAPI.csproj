@@ -258,6 +258,10 @@
     <Compile Include="Migrations\202108141724470_Transaction.designer.cs">
       <DependentUpon>202108141724470_Transaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108151316285_AddedTransaction.cs" />
+    <Compile Include="Migrations\202108151316285_AddedTransaction.designer.cs">
+      <DependentUpon>202108151316285_AddedTransaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -367,6 +371,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108141724470_Transaction.resx">
       <DependentUpon>202108141724470_Transaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108151316285_AddedTransaction.resx">
+      <DependentUpon>202108151316285_AddedTransaction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

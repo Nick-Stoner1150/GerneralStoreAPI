@@ -20,7 +20,10 @@ namespace GerneralStoreAPI.Models.Models.POCOs
         public string ProductSKU { get; set; }
         public virtual Product Product { get; set; }
 
+        [Required]
         public int ItemCount { get; set; }
+
+        [Required]
         public DateTime DateOfTransaction { get; set; }
     }
 }

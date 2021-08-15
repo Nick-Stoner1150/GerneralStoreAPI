@@ -15,37 +15,40 @@ namespace GerneralStoreAPI.Controllers
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
+
         [HttpPost]
         public async Task<IHttpActionResult> PostTransaction([FromBody] Transaction model)
         {
+            // Check if model is null 
             if(model is null)
             {
                 return BadRequest("Your request body cannot be empty.");
             }
 
-            if(ModelState.IsValid)
-            {
-                if(model.Product.IsInStock == true && model.ItemCount <= model.Product.NumberInInventory)
-                {
-                    _context.Transactions.Add(model);
-                    await _context.SaveChangesAsync();
-                    
+            // Check if model state is invalid 
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                    return Ok("You created the Transaction!");
-                }
+            var customer = await _context.Customers.FindAsync(model.CustomerId);
+            if (customer is null)
+                return BadRequest($"There is no customer with the Id of {model.CustomerId}. You must first create the customer.");
 
-                if(model.Product.IsInStock == false)
-                {
-                    return BadRequest("That product is out of stock!");
-                }
+            // Find the product by the model.ProductSKU and see that it exists
+            var productEntity = await _context.Products.FindAsync(model.ProductSKU);
+            if (productEntity is null)
+                return BadRequest($"The target Product with the SKU of {model.ProductSKU} does not exist");
+            if (productEntity.IsInStock == false)
+                return BadRequest($"Sorry the target Product with the SKU of {model.ProductSKU} is currently out of stock");
+            if (model.ItemCount > productEntity.NumberInInventory)
+                return BadRequest($"There are not enough items in stock. We only have {productEntity.NumberInInventory} in stock.");
 
-                if(model.Product.IsInStock == true && model.ItemCount > model.Product.NumberInInventory)
-                {
-                    return BadRequest("There are not enough items in stock for that purchase!");
-                }
-            }
 
-            return BadRequest(ModelState);
+            // create the transaction
+            _context.Transactions.Add(model);
+            productEntity.NumberInInventory = productEntity.NumberInInventory - model.ItemCount;
+
+            await _context.SaveChangesAsync();
+                return Ok($"{customer.FullName} purchased {model.ItemCount} of {productEntity.Name}");
         }
 
         [HttpGet]
